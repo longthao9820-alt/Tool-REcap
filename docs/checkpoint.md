@@ -11,10 +11,10 @@ LATEST_ARCHITECT_REF
 contract body
 
 STATE
-READY
+BLOCKED
 
 OPEN_GATE
-LOCAL_ONLY
+Claude Code session quota; reset reported at 17:50 Asia/Bangkok on 2026-08-25
 
 NEXT
-Executor implements contract 001; Architect reviews actual delta and evidence.
+After quota reset, rerun Executor on contract 001; Architect reviews actual delta and evidence.
