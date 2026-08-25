@@ -17,6 +17,14 @@ class SourceIdentityMismatchError(RecapError):
     """Source bytes changed relative to a previously recorded identity."""
 
 
+class ProjectNotFoundError(RecapError):
+    """The referenced project is not persisted, so no authoritative root exists."""
+
+
+class CheckpointIntegrityError(RecapError):
+    """A completed checkpoint references missing or unverifiable evidence."""
+
+
 class ProbeUnavailableError(RecapError):
     """The media probe backend could not be executed."""
 
