@@ -88,6 +88,33 @@ def test_a3_source_drift_during_probe_fails_closed(
     )
 
 
+def test_a3b_source_drift_after_probe_before_publish_fails_closed(
+    connection, project, source_file
+):
+    def mutate_before_publish():
+        source_file.write_bytes(source_file.read_bytes() + b"changed-before-publish")
+
+    with pytest.raises(SourceIdentityMismatchError):
+        ImportEpisodeUseCase(
+            connection,
+            stub_prober(),
+            before_publish=mutate_before_publish,
+        ).execute(
+            project_id=project.id,
+            project_root=Path(project.root_path),
+            source_path=source_file,
+        )
+
+    assert connection.execute("SELECT COUNT(*) FROM episodes").fetchone()[0] == 0
+    assert connection.execute("SELECT COUNT(*) FROM artifacts").fetchone()[0] == 0
+    assert (
+        connection.execute(
+            "SELECT COUNT(*) FROM jobs WHERE state = 'SUCCEEDED'"
+        ).fetchone()[0]
+        == 0
+    )
+
+
 def test_a4_artifact_root_is_bound_to_persisted_project(
     connection, project, source_file, tmp_path
 ):
