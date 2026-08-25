@@ -1,20 +1,23 @@
 PHASE
-Milestone 0 — foundation/import probe
+Milestone 1 — understand episode vertical slice
 
 ACTIVE_CONTRACT
-docs/contracts/001-foundation-import-probe.md
+docs/contracts/002-understand-episode-vertical-slice.md
 
 ACTIVE_PR
-none (origin configured; no task branch yet)
+none
+
+PR_HEAD
+none
 
 LATEST_ARCHITECT_REF
 contract body
 
 STATE
-BLOCKED
+READY
 
 OPEN_GATE
-Claude Code session quota; reset reported at 17:50 Asia/Bangkok on 2026-08-25
+LOCAL_ONLY
 
 NEXT
-After quota reset, run Executor on contract 001, review evidence, then push the accepted task branch to origin.
+Executor implements Contract 002 as one milestone-sized task; Architect reviews the full vertical slice.
