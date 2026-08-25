@@ -150,6 +150,7 @@ class ImportEpisodeUseCase:
             artifact_path=artifact_path,
             payload=payload,
             input_hash=input_hash,
+            source=source,
         )
         return ImportResult(
             episode=episode, job_id=job.id, artifact_path=artifact_path, created=True
@@ -264,10 +265,26 @@ class ImportEpisodeUseCase:
         artifact_path: Path,
         payload: bytes,
         input_hash: str,
+        source: Path,
     ) -> None:
-        """Publish episode, artifact and SUCCEEDED job in one transaction."""
+        """Publish episode, artifact and SUCCEEDED job in one transaction.
+
+        Source identity is revalidated here, at the final publication boundary,
+        so bytes that drift after the probe can never be published under the
+        earlier SHA with a SUCCEEDED job.
+        """
         if not artifact_path.is_file() or artifact_path.stat().st_size != len(payload):
             raise RuntimeError("refusing to publish: artifact output is missing or truncated")
+        if not source.is_file():
+            raise SourceMissingError(
+                f"refusing to publish: source file disappeared: {source}"
+            )
+        if hash_file(source) != episode.source_sha256:
+            raise SourceIdentityMismatchError(
+                "source bytes changed before publication for {0}: recorded {1}".format(
+                    source, episode.source_sha256
+                )
+            )
         succeeded = job.with_state(JobState.SUCCEEDED)
         self._connection.execute("BEGIN IMMEDIATE")
         try:
