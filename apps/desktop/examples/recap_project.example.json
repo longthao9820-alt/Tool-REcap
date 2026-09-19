@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "project_id": "gzsz-tap-mau",
+  "source_video": "GZSZ_Tap_Mau.mp4",
+  "classification": {
+    "content_type": "DE_GERMAN_SOAP",
+    "source_language": "de-DE",
+    "recap_language": "de-DE",
+    "confidence": 0.97,
+    "reason": "Nội dung German Soap với lời thoại tiếng Đức."
+  },
+  "render_policy": {
+    "aspect_ratio_policy": "preserve_source",
+    "voice_speed": 1.0,
+    "video_speed_min": 0.9,
+    "video_speed_max": 1.1,
+    "video_speed_absolute_min": 0.85,
+    "video_speed_absolute_max": 1.15,
+    "allow_frame_freeze": false,
+    "allow_clip_repeat": false,
+    "allow_unlisted_clips": false
+  },
+  "voice_profile": {
+    "language": "de-DE",
+    "voice_id": "M1",
+    "style": "natural"
+  },
+  "outputs": [
+    {
+      "render_id": "recap-day-du",
+      "type": "FULL_RECAP",
+      "title": "Recap tập mẫu",
+      "segments": [
+        {
+          "segment_id": "phan-001",
+          "order": 1,
+          "segment_type": "narration",
+          "purpose": "hook",
+          "narration_text": "Heute verändert eine unerwartete Nachricht alles.",
+          "estimated_voice_duration_ms": 3500,
+          "source_clips": [
+            {
+              "clip_id": "clip-001",
+              "source_video": "GZSZ_Tap_Mau.mp4",
+              "start_ms": 10000,
+              "end_ms": 13600,
+              "order": 1
+            }
+          ],
+          "original_audio": "duck",
+          "preserve_original_audio": false,
+          "subtitle": true
+        }
+      ]
+    }
+  ]
+}
+

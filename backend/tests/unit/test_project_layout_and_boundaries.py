@@ -14,7 +14,18 @@ from recap_core.infrastructure.filesystem.project_layout import (
 )
 
 CORE_ROOT = Path(__file__).resolve().parents[2] / "recap_core"
-FORBIDDEN_IN_DOMAIN = ("fastapi", "sqlite3", "subprocess", "ffmpeg", "requests", "httpx")
+FORBIDDEN_IN_DOMAIN = (
+    "fastapi",
+    "sqlite3",
+    "subprocess",
+    "ffmpeg",
+    "requests",
+    "httpx",
+    "faster_whisper",
+    "ctranslate2",
+    "torch",
+    "openai",
+)
 
 
 def test_create_makes_every_project_directory(tmp_path):

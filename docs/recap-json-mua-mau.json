@@ -1,0 +1,83 @@
+{
+  "schema_version": "2.2",
+  "project_type": "SEASON_BATCH",
+  "project_name": "Example Show - Season 01",
+  "media_root_hint": "D:\\TV Shows\\Example Show\\Season 01",
+  "output_subdirectory": "recaps_da_render",
+  "content_type": "US_TV_SHOW",
+  "recap_language": "en-US",
+  "episodes": [
+    {
+      "episode_id": "S01E01",
+      "title": "Episode 1",
+      "source_file": "Example.Show.S01E01.mkv",
+      "recap_mode": "MAIN_STORIES",
+      "available_recap_modes": ["FULL_EPISODE", "MAIN_STORIES"],
+      "recap_language": "en-US",
+      "source_rights": {
+        "status": "UNVERIFIED",
+        "notes": "User confirmation required before publishing."
+      },
+      "outputs": [
+        {
+          "render_id": "full-recap",
+          "type": "FULL_RECAP",
+          "title": "Full episode recap",
+          "file_name": "Full episode recap.mp4",
+          "narration_subtitle_file": "Full episode recap.narration.srt",
+          "original_subtitle_file": "Full episode recap.original.srt",
+          "segments": [
+            {
+              "segment_id": "S01E01-full-segment01",
+              "order": 1,
+              "segment_type": "narration",
+              "purpose": "CAUSAL_ANALYSIS",
+              "editorial_value": "Explains how the selected decision changes the episode's central conflict.",
+              "narration_text": "The decision appears defensive, but it gives the rival the leverage needed for the next reversal.",
+              "estimated_voice_duration_ms": 6000,
+              "source_visual_duration_ms": 6000,
+              "recommended_visual_speed": 1.0,
+              "audio_policy": "mute",
+              "original_audio": "mute",
+              "preserve_original_audio": false,
+              "subtitle": true,
+              "subtitle_source": "narration",
+              "source_clips": [
+                {"clip_id": "S01E01-full-clip01", "start_ms": 10000, "end_ms": 16000, "order": 1}
+              ]
+            }
+          ]
+        },
+        {
+          "render_id": "main-story-01",
+          "type": "MAIN_STORY",
+          "title": "The first main story",
+          "file_name": "The first main story.mp4",
+          "narration_subtitle_file": "The first main story.narration.srt",
+          "original_subtitle_file": "The first main story.original.srt",
+          "segments": [
+            {
+              "segment_id": "S01E01-story01-segment01",
+              "order": 1,
+              "segment_type": "narration",
+              "purpose": "CHARACTER_ANALYSIS",
+              "editorial_value": "Connects the character's choice to a verified change in goals and consequences.",
+              "narration_text": "Her answer ends the immediate argument, yet it also commits her to a plan she previously resisted.",
+              "estimated_voice_duration_ms": 6000,
+              "source_visual_duration_ms": 6000,
+              "recommended_visual_speed": 1.0,
+              "audio_policy": "mute",
+              "original_audio": "mute",
+              "preserve_original_audio": false,
+              "subtitle": true,
+              "subtitle_source": "narration",
+              "source_clips": [
+                {"clip_id": "S01E01-clip01", "start_ms": 10000, "end_ms": 16000, "order": 1}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

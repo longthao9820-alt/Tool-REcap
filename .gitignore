@@ -7,4 +7,32 @@ __pycache__/
 .venv/
 build/
 dist/
+release/
+RecapStudio.exe
+build/pyinstaller/
 *.egg-info/
+*.partial
+apps/desktop/smoke-output/
+apps/desktop/.recap_cache/
+apps/desktop/.recap_work/
+
+# Local runtime, models, binaries, and packaged backups
+runtime/
+backups/
+*.exe
+*.zip
+*.bin
+
+# Generated test and media artifacts
+test-tmp/
+bodycam-fix-test-tmp/
+thamkhao/
+video_format_analysis/
+.mypy_cache/
+
+# Local agent state and credentials
+.prime/
+.kilo/
+.env
+.env.*
+

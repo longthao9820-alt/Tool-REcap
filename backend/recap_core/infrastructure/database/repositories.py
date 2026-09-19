@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from typing import Iterable
 
 from ...domain.identity import new_id
 from ...domain.jobs.job import Job, JobState
@@ -171,3 +172,41 @@ class SqliteArtifactRepository:
             "SELECT * FROM artifacts WHERE episode_id = ? AND kind = ? AND cache_key = ?",
             (episode_id, kind, cache_key),
         ).fetchone()
+
+    def get(self, artifact_id: str):
+        return self._connection.execute(
+            "SELECT * FROM artifacts WHERE id = ?", (artifact_id,)
+        ).fetchone()
+
+    def delete_unlinked(self, episode_id: str, kinds: Iterable[str]) -> None:
+        """Remove artifact rows of `kinds` that no checkpoint still vouches for.
+
+        A row that is not bound to a surviving stage checkpoint is not evidence of
+        anything, so a re-running stage may replace it. Downstream rows reference
+        keyframe artifacts with ON DELETE RESTRICT, so callers must invalidate
+        descendants first; a surviving reference raises instead of orphaning
+        evidence.
+        """
+        for kind in kinds:
+            self._connection.execute(
+                "DELETE FROM artifacts WHERE episode_id = ? AND kind = ?"
+                " AND id NOT IN (SELECT artifact_id FROM stage_checkpoint_artifacts)",
+                (episode_id, kind),
+            )
+
+    def add_dependency(self, artifact_id: str, depends_on_artifact_id: str) -> None:
+        self._connection.execute(
+            "INSERT OR IGNORE INTO artifact_dependencies(artifact_id, depends_on_artifact_id)"
+            " VALUES (?, ?)",
+            (artifact_id, depends_on_artifact_id),
+        )
+
+    def dependency_ids(self, artifact_id: str) -> tuple[str, ...]:
+        return tuple(
+            row["depends_on_artifact_id"]
+            for row in self._connection.execute(
+                "SELECT depends_on_artifact_id FROM artifact_dependencies WHERE artifact_id = ?"
+                " ORDER BY depends_on_artifact_id",
+                (artifact_id,),
+            )
+        )

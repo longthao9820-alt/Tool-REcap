@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-recap.local/schemas/v1/recap-plan.json",
+  "title": "RecapPlan",
+  "description": "Ordered event selection for one recap revision over an immutable StoryGraph.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "recap_revision_id",
+    "analysis_revision_id",
+    "profile",
+    "budget",
+    "ordered_events",
+    "selected_plots",
+    "dialogue_decisions",
+    "must_have_omissions",
+    "estimated_duration_ms",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "minLength": 1},
+    "recap_revision_id": {"type": "string", "minLength": 1},
+    "analysis_revision_id": {"type": "string", "minLength": 1},
+    "profile": {"$ref": "#/$defs/RecapProfile"},
+    "budget": {"$ref": "#/$defs/StoryBudget"},
+    "ordered_events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/PlannedEvent"}
+    },
+    "selected_plots": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "dialogue_decisions": {"$ref": "#/$defs/DialogueDecisions"},
+    "must_have_omissions": {"type": "array", "items": {"$ref": "#/$defs/MustHaveOmission"}},
+    "estimated_duration_ms": {"type": "integer", "exclusiveMinimum": 0},
+    "provenance": {"$ref": "#/$defs/Provenance"}
+  },
+  "$defs": {
+    "Sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_sha256", "producer", "producer_version", "schema_version"],
+      "properties": {
+        "source_sha256": {"$ref": "#/$defs/Sha256"},
+        "producer": {"type": "string", "minLength": 1},
+        "producer_version": {"type": "string", "minLength": 1},
+        "schema_version": {"type": "integer", "minimum": 1},
+        "prompt_id": {"type": ["string", "null"]},
+        "prompt_version": {"type": ["string", "null"]},
+        "model": {"type": ["string", "null"]},
+        "provider": {"type": ["string", "null"]}
+      }
+    },
+    "RecapProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "style",
+        "language",
+        "compression",
+        "dialogue_policy",
+        "focus_character_id",
+        "max_duration_ms",
+        "speech_rate_wps"
+      ],
+      "properties": {
+        "schema_version": {"const": 1},
+        "style": {"enum": ["FULL_PLOT", "FAST_FOCUSED", "CINEMATIC", "CHARACTER"]},
+        "language": {"type": "string", "minLength": 1},
+        "compression": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "dialogue_policy": {"enum": ["NARRATION_ONLY", "KEY_DIALOGUE", "DIALOGUE_HEAVY"]},
+        "focus_character_id": {"type": ["string", "null"]},
+        "max_duration_ms": {"type": ["integer", "null"], "minimum": 0},
+        "speech_rate_wps": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "BudgetDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "budget_class", "reason"],
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1},
+        "budget_class": {"enum": ["MUST_HAVE", "SHOULD_HAVE", "OPTIONAL"]},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "StoryBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["analysis_revision_id", "decisions"],
+      "properties": {
+        "analysis_revision_id": {"type": "string", "minLength": 1},
+        "decisions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/BudgetDecision"}
+        }
+      }
+    },
+    "PlannedEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "ordinal", "budget_class", "decision_reason", "estimated_ms"],
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1},
+        "ordinal": {"type": "integer", "minimum": 0},
+        "budget_class": {"enum": ["MUST_HAVE", "SHOULD_HAVE", "OPTIONAL"]},
+        "decision_reason": {"type": "string", "minLength": 1},
+        "estimated_ms": {"type": "integer", "exclusiveMinimum": 0}
+      }
+    },
+    "DialogueDecisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy", "language"],
+      "properties": {
+        "policy": {"enum": ["NARRATION_ONLY", "KEY_DIALOGUE", "DIALOGUE_HEAVY"]},
+        "language": {"type": "string", "minLength": 1}
+      }
+    },
+    "MustHaveOmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "reason"],
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

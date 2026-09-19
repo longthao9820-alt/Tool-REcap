@@ -39,3 +39,35 @@ class UnsafeArtifactPathError(RecapError):
 
 class JobConflictError(RecapError):
     """A job identity is already owned by another active execution."""
+
+
+class ProviderUnavailableError(RecapError):
+    """A required provider capability is not available in this environment."""
+
+
+class ProviderOutputInvalidError(RecapError):
+    """A provider returned output that does not satisfy its DTO contract."""
+
+
+class ProviderNotAuthorizedError(RecapError):
+    """A provider is not permitted by the production composition root."""
+
+
+class MediaProcessingError(RecapError):
+    """A local media processing command failed or produced unusable output."""
+
+
+class RevisionMismatchError(RecapError):
+    """An entity reference crosses analysis/recap revision boundaries."""
+
+
+class SchemaValidationError(RecapError):
+    """A document violates its published JSON schema."""
+
+
+class StageDependencyError(RecapError):
+    """A stage cannot run because a predecessor output is missing or invalid."""
+
+
+class BudgetInfeasibleError(RecapError):
+    """A recap plan cannot satisfy MUST_HAVE coverage inside its hard bounds."""

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-recap.local/schemas/v1/shots.json",
+  "title": "ShotCollection",
+  "description": "Detected camera-cut intervals and their source-timestamped keyframes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "analysis_revision_id",
+    "duration_ms",
+    "proxy_sha256",
+    "provenance",
+    "shots"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "analysis_revision_id": {"type": "string", "minLength": 1},
+    "duration_ms": {"type": "integer", "exclusiveMinimum": 0},
+    "proxy_sha256": {"$ref": "#/$defs/Sha256"},
+    "provenance": {"$ref": "#/$defs/Provenance"},
+    "shots": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/Shot"}}
+  },
+  "$defs": {
+    "Sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_sha256", "producer", "producer_version", "schema_version"],
+      "properties": {
+        "source_sha256": {"$ref": "#/$defs/Sha256"},
+        "producer": {"type": "string", "minLength": 1},
+        "producer_version": {"type": "string", "minLength": 1},
+        "schema_version": {"type": "integer", "minimum": 1},
+        "prompt_id": {"type": ["string", "null"]},
+        "prompt_version": {"type": ["string", "null"]},
+        "model": {"type": ["string", "null"]},
+        "provider": {"type": ["string", "null"]}
+      }
+    },
+    "Keyframe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timestamp_ms", "path", "sha256", "size", "kind"],
+      "properties": {
+        "timestamp_ms": {"type": "integer", "minimum": 0},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/Sha256"},
+        "size": {"type": "integer", "exclusiveMinimum": 0},
+        "kind": {"enum": ["REPRESENTATIVE", "ACTION"]}
+      }
+    },
+    "Shot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ordinal", "start_ms", "end_ms", "keyframes", "excluded_reason"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "ordinal": {"type": "integer", "minimum": 0},
+        "start_ms": {"type": "integer", "minimum": 0},
+        "end_ms": {"type": "integer", "exclusiveMinimum": 0},
+        "keyframes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/Keyframe"}
+        },
+        "excluded_reason": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

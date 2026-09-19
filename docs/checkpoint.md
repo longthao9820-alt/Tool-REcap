@@ -5,7 +5,7 @@ ACTIVE_CONTRACT
 docs/contracts/002-understand-episode-vertical-slice.md
 
 ACTIVE_PR
-none
+branch task/002-understand-episode-vertical-slice (local, uncommitted milestone work)
 
 PR_HEAD
 none
@@ -14,10 +14,10 @@ LATEST_ARCHITECT_REF
 contract body
 
 STATE
-READY
+BLOCKED
 
 OPEN_GATE
-LOCAL_ONLY
+Claude Code weekly limit reached; resets 2026-08-29 04:00 Asia/Bangkok
 
 NEXT
-Executor implements Contract 002 as one milestone-sized task; Architect reviews the full vertical slice.
+At or after reset, resume Contract 002 with Claude Code from the preserved uncommitted worktree; complete the same milestone-sized slice before Architect review. Do not alter the worktree or call Claude before reset.
